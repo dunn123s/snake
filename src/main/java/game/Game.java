@@ -22,37 +22,51 @@ import java.util.*;
  * 游戏类，用于控制和协调整个游戏流程
  */
 public class Game extends KeyAdapter implements Runnable {
+    //贪吃蛇
     @Getter private final Snake snake;
+    //画布场景
     @Getter private final Canvas canvas;
-
+    //窗体容器
     private final JFrame frame;
+    //位置集合
     private final List<Position> allPos = new ArrayList<>();
+    //影响事件集合
     private final List<Class<?>> effects = Arrays.asList(Alcohol.class, Doping.class, Poison.class);
-
+    //方向
     private Dir preDir;
 
     public void showUI() {
+        //设置容器出现的位置
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //不用frame自带的布局
         frame.setLayout(null);
+        //设置大小
         frame.setSize(canvas.getWidth() + 50, canvas.getHeight() + 100);
+        //设置窗口相对于指定组件的位置
         frame.setLocationRelativeTo(null);
+        //添加场景画布
         frame.add(canvas);
+        //设置位置
         canvas.setLocation(10, 10);
+        //添加食物
         addFruit();
-
+        //设置监听器
         frame.addKeyListener(this);
+        //显示窗口
         frame.setVisible(true);
     }
-
+    //开始线程任务
     public void start() {
         new Thread(this).start();
     }
 
 
+    //要执行的任务
     @Override
     public void run() {
+        //刷新时间
         long refreshTime = System.currentTimeMillis();
-
+        //todo 如果是正常状态
         while(!snake.getState().done()) {
             try {
                 int time = Math.max(20, 800 - snake.getSpeed());
@@ -63,7 +77,9 @@ public class Game extends KeyAdapter implements Runnable {
             if(null != preDir) {
                 snake.setDir(preDir);
             }
+            //根据方向移动位置
             snake.move();
+            //重新绘制图片，内部会调用update方法
             canvas.repaint();
 
             if(System.currentTimeMillis() - refreshTime > 10000) {
@@ -80,7 +96,7 @@ public class Game extends KeyAdapter implements Runnable {
             JOptionPane.showMessageDialog(null, "小蛇已死, 游戏结束");
         }
     }
-
+    //添加影响物品
     public void addEffects() {
         randomPosition().ifPresent(position -> {
             Class<?> clazz = CollectionKit.randomOne(effects);
@@ -92,7 +108,7 @@ public class Game extends KeyAdapter implements Runnable {
         });
 
     }
-
+    //添加食物
     public void addFruit() {
         randomPosition().ifPresent(position -> {
             Fruit f = new Fruit();
@@ -101,7 +117,7 @@ public class Game extends KeyAdapter implements Runnable {
         });
 
     }
-
+   //随机获取位置
     public Optional<Position> randomPosition() {
 
         Set<Position> all = new HashSet<>(allPos);

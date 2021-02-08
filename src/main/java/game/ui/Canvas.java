@@ -19,11 +19,12 @@ public class Canvas extends JPanel {
     private final Dimension unitSize;
     // 缓冲图片
     private final Image offScreenImage;
-
+    // x,y坐标
     @Getter private final int rows, cols;
-
+    // 可绘制物集合
     private final LinkedHashSet<IDrawable> drawables = new LinkedHashSet<>();
 
+    //构造函数
     public Canvas(Dimension unitSize, int rows, int clos) {
         this.unitSize = unitSize;
         this.rows = rows;
@@ -59,12 +60,20 @@ public class Canvas extends JPanel {
         paint(graphics);
         graphics.setColor(color);//重置之前的颜色
 
+        //释放画笔
         graphics.dispose();
 
         // 绘制图片到画布上
         g.drawImage(this.offScreenImage, 0, 0, null);
+
+//        Color c = g.getColor();
+//
+//        paint(g);
+//
+//        g.setColor(c);
     }
 
+    //调用画笔的方法绘制所有的图片
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -72,12 +81,14 @@ public class Canvas extends JPanel {
         draws.forEach(draw -> draw.draw(g, this.unitSize));
     }
 
+    //根据位置获取位置中的物品，可能有也可能没有
     public Optional<Unit> getUnit(Position position) {
         List<IDrawable> draws = new ArrayList<>(this.drawables);
         return draws.stream()
                 .filter(drawable -> drawable instanceof Unit)
                 .map(drawable -> (Unit) drawable)
                 .filter(unit -> unit.collision(position))
+                //从流中获取第一个元素
                 .findFirst();
     }
 }

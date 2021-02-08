@@ -46,7 +46,7 @@ public class Position {
     /**
      * 根据方向获取下一个尾部位置
      * @param dir 方向
-     * @return 下一个尾部未知
+     * @return 下一个尾部位置
      */
     public Position nextTail(Dir dir, int cols, int rows) throws BeyondBoundaryException {
         return next(dir, 1, cols, rows);
