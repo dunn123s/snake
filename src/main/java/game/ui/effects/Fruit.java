@@ -8,6 +8,9 @@ import game.ui.snake.Snake;
 
 import java.awt.*;
 
+/**
+ * 要绘制出来长身体的物品
+ */
 public class Fruit extends Unit implements SnakeEffect {
     @Override
     public Color drawColor() {

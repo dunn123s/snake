@@ -7,6 +7,9 @@ import game.ui.snake.Snake;
 
 import java.awt.*;
 
+/**
+ * 要绘制出来加速的物品
+ */
 public class Doping extends Unit implements SnakeEffect {
     @Override
     public void whenCollision(Snake snake) {
