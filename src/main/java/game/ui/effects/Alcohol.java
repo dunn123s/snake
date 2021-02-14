@@ -8,7 +8,7 @@ import game.ui.snake.Snake;
 import java.awt.*;
 
 /**
- * 要绘制出来减速的物品
+ * 要绘制出来减速的物品，
  */
 public class Alcohol extends Unit implements SnakeEffect {
     @Override

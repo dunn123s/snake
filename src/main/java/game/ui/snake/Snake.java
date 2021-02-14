@@ -21,9 +21,9 @@ import java.util.Optional;
 
 public class Snake extends Unit implements SnakeEffect {
 
-    //持有场景画笔
+    //持有场景画布
     private final game.ui.Canvas canvas;
-    //蛇的身体集合
+        //蛇的身体集合
     @Getter private final LinkedList<Body> bodies = new LinkedList<>();
     //最大长度
     private final int maxLen;
@@ -39,7 +39,15 @@ public class Snake extends Unit implements SnakeEffect {
      */
     private volatile boolean stop = false;
 
-    //构造方法，初始化蛇
+    /**
+     *
+     * @param canvas    场景
+     * @param dir       方向
+     * @param initLen   初始化身的大小
+     * @param maxLen    蛇的最大长度
+     * @param x         x坐标
+     * @param y         y坐标
+     */
     public Snake(Canvas canvas, Dir dir, int initLen, int maxLen, int x, int y) {
         //初始长度不足2位，默认赋值长度为2
         if(initLen < 2) {
@@ -57,6 +65,7 @@ public class Snake extends Unit implements SnakeEffect {
         bodies.add(head);
         //遍历蛇的身体
         for(int i = 1; i < initLen; i++) {
+            //将身体添加到尾部
             this.addTail();
         }
     }
@@ -82,6 +91,13 @@ public class Snake extends Unit implements SnakeEffect {
         //先拿出下一个格子的物品，等下要判断这个物品碰撞效果
         Optional<Unit> unit = canvas.getUnit(nextHead);
 
+        // 判断碰撞影响
+        unit.ifPresent(u-> {
+            if(u instanceof SnakeEffect) {
+                ((SnakeEffect) u).whenCollision(this);
+            }
+        });
+
         // 如果stop状态为true
         if(this.stop) {
             // 将状态设置为false，防止在边界出现物品还继续往前走，设置为false后，手动调整方向，再继续走，不然没有时间改变方向会撞墙
@@ -89,18 +105,14 @@ public class Snake extends Unit implements SnakeEffect {
            //将删掉的尾巴加上，不然不会涨身体，因为添加头部，删除尾部等于没有长身体
            this.bodies.addLast(tail);
         } else {
+            //下面两部为真正的移动
             //设置尾部的位置
             tail.setPosition(nextHead);
             //将尾巴添加到列表的第一个位置
             this.bodies.addFirst(tail);
         }
 
-        // 判断碰撞影响
-        unit.ifPresent(u-> {
-            if(u instanceof SnakeEffect) {
-                ((SnakeEffect) u).whenCollision(this);
-            }
-        });
+
 
         //如果身体的长度到指定的长度，将蛇的状态设置为FULL,就是通关
         if(bodies.size() >= maxLen) {
@@ -133,17 +145,17 @@ public class Snake extends Unit implements SnakeEffect {
     }
 
     private void addTail() {
-        //创建蛇下一个身体对象
+        //创建蛇下一个身体对象（物品）
         Body next = new Body(this);
         try {
-
+            //设置物品出现的位置
             next.setPosition(getTail().getPosition().nextTail(dir, this.canvas.getCols(), this.canvas.getRows()));
         } catch (BeyondBoundaryException e) {
             this.setState(SnakeState.DIE);
             JOptionPane.showMessageDialog(null, "添加尾巴时碰到了边界，很奇怪！需要检查,游戏结束");
             return;
         }
-        //添加到身体尾部
+        //将物品添加到蛇身体尾部
         bodies.add(next);
     }
 
@@ -161,8 +173,10 @@ public class Snake extends Unit implements SnakeEffect {
         return Color.BLACK;
     }
 
+    // 判断整个蛇是否与传进来的坐标发生碰撞
     @Override
     public boolean collision(Position position) {
+        //从身体集合中取出每个元素去匹配，看看传进来的坐标是否与蛇身体的任何一个位置发生碰撞
         return this.bodies.stream().anyMatch(body -> body.collision(position));
     }
 

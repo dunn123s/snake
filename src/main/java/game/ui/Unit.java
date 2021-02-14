@@ -55,7 +55,11 @@ public abstract class Unit implements IDrawable {
     // 获取要绘画的物品颜色
     public abstract Color drawColor();
 
-    //判断是否发生碰撞，如果传进来的位置与绘制物品的位置一致，说明发生碰撞
+    /**
+     * 判断是否发生碰撞，如果传进来的位置与绘制物品的位置一致，说明发生碰撞
+     * @param position 传进来的任意坐标
+     * @return 是否发生碰撞
+     */
     public boolean collision(Position position) {
         return this.position.equals(position);
     }
