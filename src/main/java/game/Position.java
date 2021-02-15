@@ -37,6 +37,8 @@ public class Position {
     /**
      * 根据方向获取下一个头部位置
      * @param dir 方向
+     * @param cols 地图行
+     * @param rows 地图列
      * @return 下一个头部未知
      */
     public Position nextHead(Dir dir, int cols, int rows) throws BeyondBoundaryException {

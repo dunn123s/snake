@@ -23,7 +23,7 @@ public class Snake extends Unit implements SnakeEffect {
 
     //持有场景画布
     private final game.ui.Canvas canvas;
-        //蛇的身体集合
+    //蛇的身体集合,因为蛇是由身体组成的
     @Getter private final LinkedList<Body> bodies = new LinkedList<>();
     //最大长度
     private final int maxLen;

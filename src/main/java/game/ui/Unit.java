@@ -11,7 +11,7 @@ public abstract class Unit implements IDrawable {
     //要绘制物品的位置
     protected Position position;
 
-    //设置物品位置
+    //设置物品位置(初始化坐标)
     public void setPosition(int x, int y) {
         this.position = new Position(x, y);
     }
@@ -37,7 +37,7 @@ public abstract class Unit implements IDrawable {
     }
 
     /**
-     * 使用画笔绘制物品
+     * 使用画笔绘制最小物品
      * @param   g        画笔
      * @param minUnit   要绘制的物品
      */

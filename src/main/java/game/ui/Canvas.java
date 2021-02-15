@@ -31,14 +31,14 @@ public class Canvas extends JPanel {
         this.cols = clos;
         int width = unitSize.width * clos;
         int height = unitSize.height * rows;
-        //初始化图片与Jpenl的规格一样大
+        //初始化图片与Jpanel的规格一样大
         this.offScreenImage = createImage(width, height);
 
-        //设置Jpanl宽高
+        //设置Jpanel宽高
         this.setSize(width, height);
-        //设置Jpanl在父容器中的大小
+        //设置Jpanel在父容器中的大小
         this.setPreferredSize(new Dimension(width, height));
-        //设置Jpanl的最小大小
+        //设置Jpanel的最小大小
         this.setMinimumSize(new Dimension(width, height));
         //设置场景的背景颜色
         this.setBackground(Color.WHITE);
@@ -91,10 +91,15 @@ public class Canvas extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         List<IDrawable> draws = new ArrayList<>(this.drawables);
+        //绘制出所有最小单元
         draws.forEach(draw -> draw.draw(g, this.unitSize));
     }
 
-    //根据位置获取位置中的物品，可能有也可能没有
+    /**
+     * 根据位置获取发生碰撞的位置中的物品，可能有也可能没有
+     * @param position  坐标位置
+     * @return 位置中的物品
+     */
     public Optional<Unit> getUnit(Position position) {
         // 创建list集合存放可绘制物品集合
         List<IDrawable> draws = new ArrayList<>(this.drawables);
