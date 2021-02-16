@@ -11,7 +11,7 @@ public abstract class Unit implements IDrawable {
     //要绘制物品的位置
     protected Position position;
 
-    //设置物品位置
+    //设置物品位置(初始化坐标)
     public void setPosition(int x, int y) {
         this.position = new Position(x, y);
     }
@@ -37,7 +37,7 @@ public abstract class Unit implements IDrawable {
     }
 
     /**
-     * 使用画笔绘制物品
+     * 使用画笔绘制最小物品
      * @param   g        画笔
      * @param minUnit   要绘制的物品
      */
@@ -55,7 +55,11 @@ public abstract class Unit implements IDrawable {
     // 获取要绘画的物品颜色
     public abstract Color drawColor();
 
-    //判断是否发生碰撞，如果传进来的位置与绘制物品的位置一致，说明发生碰撞
+    /**
+     * 判断是否发生碰撞，如果传进来的位置与绘制物品的位置一致，说明发生碰撞
+     * @param position 传进来的任意坐标
+     * @return 是否发生碰撞
+     */
     public boolean collision(Position position) {
         return this.position.equals(position);
     }

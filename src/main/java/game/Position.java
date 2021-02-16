@@ -37,6 +37,8 @@ public class Position {
     /**
      * 根据方向获取下一个头部位置
      * @param dir 方向
+     * @param cols 地图行
+     * @param rows 地图列
      * @return 下一个头部未知
      */
     public Position nextHead(Dir dir, int cols, int rows) throws BeyondBoundaryException {
@@ -52,6 +54,15 @@ public class Position {
         return next(dir, 1, cols, rows);
     }
 
+    /**
+     *
+     * @param dir 方向
+     * @param reverse 反转（坐标轴是x，y都是从0开始，如果y当前位置是10，那么往前走的下一个坐标就9的位置，需要-1）
+     * @param cols 列
+     * @param rows 行
+     * @return
+     * @throws BeyondBoundaryException
+     */
     private Position next(Dir dir, int reverse, int cols, int rows) throws BeyondBoundaryException {
         Position position;
         switch (dir) {
@@ -70,7 +81,7 @@ public class Position {
             default:
                 throw new RuntimeException(dir + "方向无法识别");
         }
-
+        //如果x坐标大于场景的x最大坐标或者小于零；y坐标大于场景的y坐标或者小于零,说明越界，需抛异常
         if(position.getX() >= cols || position.getX() < 0 ||
             position.getY() >= rows || position.getY() < 0) {
             throw new BeyondBoundaryException();

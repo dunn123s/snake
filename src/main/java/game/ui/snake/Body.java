@@ -10,7 +10,7 @@ import java.awt.*;
  */
 public class Body extends Unit implements SnakeEffect {
 
-    //只有蛇本身
+    //持有蛇本身，要知道是哪条蛇
     private final Snake owner;
 
     //构造函数初始化蛇身
