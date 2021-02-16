@@ -36,17 +36,17 @@ public class Game extends KeyAdapter implements Runnable {
     private Dir preDir;
 
     public void showUI() {
-        //设置容器出现的位置
+        //关闭窗口
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //不用frame自带的布局
         frame.setLayout(null);
         //设置大小
         frame.setSize(canvas.getWidth() + 50, canvas.getHeight() + 100);
-        //设置窗口相对于指定组件的位置
+        //设置窗口相对于指定组件的位置(窗口在屏幕的中间出现)
         frame.setLocationRelativeTo(null);
         //添加场景画布
         frame.add(canvas);
-        //设置位置
+        //设置场景（Jpanel出现的位置）
         canvas.setLocation(10, 10);
         //添加食物
         addFruit();
@@ -64,17 +64,23 @@ public class Game extends KeyAdapter implements Runnable {
     //要执行的任务
     @Override
     public void run() {
-        //刷新时间
+        //刷新时间(当前时间)
         long refreshTime = System.currentTimeMillis();
         //如果是正常状态
         while(!snake.getState().done()) {
             try {
+                //设置最大的速度，如果速度小于20就取最大速度为20
                 int time = Math.max(20, 800 - snake.getSpeed());
+                //设置最小速度，最小速度超过1500就取最小速度1500
                 time = Math.min(time, 1500);
+                //设置frame的title
                 frame.setTitle("贪吃蛇  当前速度:" + time);
+                //设置睡眠时间，也就蛇运行的当前速度（下一回合）
                 Thread.sleep(time);
             } catch (InterruptedException ignore) {}
+            //如果方向不为空，设置蛇的运行方向
             if(null != preDir) {
+
                 snake.setDir(preDir);
             }
             //根据方向移动位置
@@ -82,7 +88,7 @@ public class Game extends KeyAdapter implements Runnable {
             //重新绘制图片，内部会调用update方法
             canvas.repaint();
 
-            //没个10秒钟刷新一个影响碰撞的物品
+            //每隔10秒钟刷新一个影响碰撞的物品
             if(System.currentTimeMillis() - refreshTime > 10000) {
                 addEffects();
                 //重新将刷新时间置为当前时间
@@ -145,8 +151,9 @@ public class Game extends KeyAdapter implements Runnable {
 
             //如果随机的坐标没有物品，则返回这个坐标
             Optional<Unit> unit = canvas.getUnit(position);
-            //如果位置不存在，就返回这个位置
+            //如果物品不存在，就返回这个位置
             if(!unit.isPresent()) {
+                //返回这个坐标用Optional包装下
                 return Optional.of(position);
             }
         }
@@ -189,6 +196,7 @@ public class Game extends KeyAdapter implements Runnable {
         frame = new JFrame();
         this.canvas = new Canvas(minUnitSize, rows, cols);
         this.snake = new Snake(this.canvas, Dir.RIGHT, snakeLength, rows * cols / 2, snakeLength +1, 0);
+        //将可绘制的物品添加到场景中可绘制物品集合
         canvas.addDrawable(snake);
 
         //遍历将所有的位置添加到集合中，相当于是整个地图上的位置（整个面积）

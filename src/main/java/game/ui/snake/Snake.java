@@ -40,7 +40,7 @@ public class Snake extends Unit implements SnakeEffect {
     private volatile boolean stop = false;
 
     /**
-     *
+     * 初始化蛇
      * @param canvas    场景
      * @param dir       方向
      * @param initLen   初始化身的大小
@@ -57,13 +57,13 @@ public class Snake extends Unit implements SnakeEffect {
         this.dir = dir;
         this.maxLen = maxLen;
 
-        //创建蛇身体对象
+        //创建蛇（头）身体对象
         Body head = new Body(this);
         //设置身体的位置
         head.setPosition(x, y);
         //将身体添加到列表的末尾位置
         bodies.add(head);
-        //遍历蛇的身体
+        //初始化蛇时，遍历蛇的身体
         for(int i = 1; i < initLen; i++) {
             //将身体添加到尾部
             this.addTail();
@@ -74,13 +74,13 @@ public class Snake extends Unit implements SnakeEffect {
     public void move() {
         //获取蛇头部
         Body head = getHead();
-        //获取蛇尾部
+        //获取蛇尾部(删除尾部后获取尾部)
         Body tail = bodies.removeLast();
 
-        // 定义下一个位置
+        // 定义下一个头部位置
         Position nextHead;
         try {
-            // 根据方向、场景画布的大小找到下一个位置
+            // 先获取头部位置，再根据方向、场景画布的大小找到下一个头部的位置
             nextHead = head.getPosition().nextHead(this.dir, this.canvas.getCols(), this.canvas.getRows());
         } catch (BeyondBoundaryException e) {
             //如果出现异常，将蛇的状态设置为DIE,游戏结束
@@ -195,6 +195,7 @@ public class Snake extends Unit implements SnakeEffect {
     @Override
     public void draw(Graphics g, Dimension minUnit) {
         Color c = g.getColor();
+        //创建一个集合存储蛇的身体，然后使用List结合的遍历方法来画出每一个身体部位（也就是蛇）
         new ArrayList<>(bodies).forEach(body -> body.draw(g, minUnit));
         g.setColor(c);
     }
