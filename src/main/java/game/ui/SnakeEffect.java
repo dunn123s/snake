@@ -9,7 +9,7 @@ public interface SnakeEffect {
 
     /**
      * 当与蛇身发生碰撞
-     * @param snake 蛇
+     * @param snake 蛇（哪条蛇，传进来的蛇）
      */
     void whenCollision(Snake snake);
 

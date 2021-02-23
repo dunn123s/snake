@@ -27,6 +27,7 @@ public class Body extends Unit implements SnakeEffect {
     //当与蛇身发生碰撞后产生的效果
     @Override
     public void whenCollision(Snake snake) {
+        //设计是这样的，可以传参，这里没有用到参数
         owner.setState(SnakeState.DIE);
     }
 }

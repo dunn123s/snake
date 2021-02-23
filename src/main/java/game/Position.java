@@ -81,7 +81,7 @@ public class Position {
             default:
                 throw new RuntimeException(dir + "方向无法识别");
         }
-        //如果x坐标大于场景的x最大坐标或者小于零；y坐标大于场景的y坐标或者小于零,说明越界，需抛异常
+        //如果x坐标大于场景的x最大坐标或者小于零(x坐标所对应的点应为列的坐标，所以要对应cols)；y坐标大于场景的y坐标或者小于零,说明越界，需抛异常
         if(position.getX() >= cols || position.getX() < 0 ||
             position.getY() >= rows || position.getY() < 0) {
             throw new BeyondBoundaryException();

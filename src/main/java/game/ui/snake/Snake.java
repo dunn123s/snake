@@ -21,7 +21,7 @@ import java.util.Optional;
 
 public class Snake extends Unit implements SnakeEffect {
 
-    //持有场景画布
+    //持有场景画布,以为蛇不是最小单位，要讲蛇添加到场景中
     private final game.ui.Canvas canvas;
     //蛇的身体集合,因为蛇是由身体组成的
     @Getter private final LinkedList<Body> bodies = new LinkedList<>();
@@ -59,9 +59,9 @@ public class Snake extends Unit implements SnakeEffect {
 
         //创建蛇（头）身体对象
         Body head = new Body(this);
-        //设置身体的位置
+        //设置蛇头的位置
         head.setPosition(x, y);
-        //将身体添加到列表的末尾位置
+        //将身蛇头加到列表的末尾位置（因为开始时只有一个开头，添加开头，结尾都行）
         bodies.add(head);
         //初始化蛇时，遍历蛇的身体
         for(int i = 1; i < initLen; i++) {
@@ -148,7 +148,7 @@ public class Snake extends Unit implements SnakeEffect {
         //创建蛇下一个身体对象（物品）
         Body next = new Body(this);
         try {
-            //设置物品出现的位置
+            //设置物品出现的位置(先找到身体的尾部位置，然后在根据尾部位置确定下一个尾部位置)
             next.setPosition(getTail().getPosition().nextTail(dir, this.canvas.getCols(), this.canvas.getRows()));
         } catch (BeyondBoundaryException e) {
             this.setState(SnakeState.DIE);
