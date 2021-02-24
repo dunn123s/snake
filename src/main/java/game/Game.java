@@ -6,7 +6,7 @@ import game.ui.Unit;
 import game.ui.effects.Alcohol;
 import game.ui.effects.Doping;
 import game.ui.effects.Fruit;
-import game.ui.effects.Poison;
+import game.ui.effects.Posion;
 import game.ui.snake.Snake;
 import game.ui.snake.SnakeState;
 import lombok.Getter;
@@ -31,7 +31,7 @@ public class Game extends KeyAdapter implements Runnable {
     //位置集合
     private final List<Position> allPos = new ArrayList<>();
     //影响事件集合
-    private final List<Class<?>> effects = Arrays.asList(Alcohol.class, Doping.class, Poison.class);
+    private final List<Class<?>> effects = Arrays.asList(Alcohol.class, Doping.class, Posion.class);
     //方向
     private Dir preDir;
 

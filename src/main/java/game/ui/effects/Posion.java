@@ -11,7 +11,7 @@ import java.awt.*;
 /**
  * 要绘制出来碰到会毒死的物品
  */
-public class Poison extends Unit implements SnakeEffect {
+public class Posion extends Unit implements SnakeEffect {
     @Override
     public void whenCollision(Snake snake) {
         System.out.println("毒死");
